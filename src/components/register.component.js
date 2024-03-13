@@ -35,6 +35,33 @@ const vusername = value => {
     );
   }
 };
+const vnom = value => {
+  if (value.length < 3 || value.length > 20) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        The name must be between 3 and 20 characters.
+      </div>
+    );
+  }
+};
+const vprenom = value => {
+  if (value.length < 3 || value.length > 20) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        The username must be between 3 and 20 characters.
+      </div>
+    );
+  }
+};
+const vmatricule = value => {
+  if (value.length < 3 || value.length > 20) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        The username must be between 3 and 20 characters.
+      </div>
+    );
+  }
+};
 
 const vpassword = value => {
   if (value.length < 6 || value.length > 40) {
@@ -50,17 +77,24 @@ export default class Register extends Component {
   constructor(props) {
     super(props);
     this.handleRegister = this.handleRegister.bind(this);
+    this.onChangeNom = this.onChangeNom.bind(this);
+    this.onChangePrenom = this.onChangePrenom.bind(this);
     this.onChangeUsername = this.onChangeUsername.bind(this);
+    this.onChangeMatricule = this.onChangeMatricule.bind(this);
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
 
     this.state = {
       username: "",
       email: "",
+      nom: "",
+      prenom: "",
+      matricule: "",  // <- Initialisation manquante dans le constructeur
       password: "",
       successful: false,
       message: ""
     };
+    
   }
 
   onChangeUsername(e) {
@@ -72,6 +106,21 @@ export default class Register extends Component {
   onChangeEmail(e) {
     this.setState({
       email: e.target.value
+    });
+  }
+  onChangePrenom(e) {
+    this.setState({
+      prenom: e.target.value
+    });
+  }
+  onChangeNom(e) {
+    this.setState({
+      nom: e.target.value
+    });
+  }
+  onChangeMatricule(e) {
+    this.setState({
+      matricule: e.target.value
     });
   }
 
@@ -93,7 +142,10 @@ export default class Register extends Component {
 
     if (this.checkBtn.context._errors.length === 0) {
       AuthService.register(
+        this.state.nom,
+        this.state.prenom,
         this.state.username,
+        this.state.matricule,
         this.state.email,
         this.state.password
       ).then(
@@ -139,6 +191,39 @@ export default class Register extends Component {
             {!this.state.successful && (
               <div>
                 <div className="form-group">
+                <label htmlFor="nom">Nom</label>
+                   <Input
+                      type="text"
+                      className="form-control"
+                        name="nom"
+                         value={this.state.nom}
+                          onChange={this.onChangeNom}
+                          validations={[required, vnom]}
+                        />
+    </div>
+    <div className="form-group">
+      <label htmlFor="prenom">Prénom</label>
+      <Input
+        type="text"
+        className="form-control"
+        name="prenom"
+        value={this.state.prenom}
+        onChange={this.onChangePrenom}
+        validations={[required, vprenom]}
+      />
+    </div>
+    <div className="form-group">
+      <label htmlFor="matricule">Matricule</label>
+      <Input
+        type="text"
+        className="form-control"
+        name="matricule"
+        value={this.state.matricule}
+        onChange={this.onChangeMatricule}
+        validations={[required, vmatricule]}
+      />
+    </div>
+                <div className="form-group">
                   <label htmlFor="username">Username</label>
                   <Input
                     type="text"
@@ -149,6 +234,8 @@ export default class Register extends Component {
                     validations={[required, vusername]}
                   />
                 </div>
+                
+                
 
                 <div className="form-group">
                   <label htmlFor="email">Email</label>

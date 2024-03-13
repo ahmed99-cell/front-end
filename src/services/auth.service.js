@@ -22,11 +22,23 @@ class AuthService {
     localStorage.removeItem("user");
   }
 
-  register(username, email, password) {
+  register(nom, prenom, username, matricule, email, password) {
     return axios.post(API_URL + "signup", {
+      nom,
+      prenom,
       username,
+      matricule,
       email,
-      password
+      password,
+      
+    })
+    .then(response => {
+      console.log("Server response:", response.data);
+      return response.data;
+    })
+    .catch(error => {
+      console.error("Error during registration:", error);
+      throw error;
     });
   }
 
